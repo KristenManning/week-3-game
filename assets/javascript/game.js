@@ -39,15 +39,16 @@ document.onkeyup = function(event){
     // Checks whether the guessed letter is in the correct word 
     // If the guess is correct, function places guessed letter in the skeleton
     function letter_checker(word, user_guess, skeleton) {
-      for (i = 0; i < 2*word.length; i++) {
+      for (i = 0; i <word.length*2; i++) {
         if (word.charAt(i) == user_guess){
-          new_skel = skeleton.substr(0,i) + user_guess + skeleton.substr(i+1, len)
+          new_skel = skeleton.substr(0,i*2) + user_guess + skeleton.substr(i*2+1, skeleton.length)
+          skeleton = new_skel 
         }
       }
-      return new_skel
+      return skeleton 
     }
 
-    document.write(letter_checker("cat", "c", "_ _ _ _ _ _ _ "))
+    document.write(letter_checker("beaker", "e", "_ _ _ _ _ _ "))
 
     function comp_checker(skeleton) {
       for (i=0; i < skeleton.length; i++){
@@ -57,19 +58,6 @@ document.onkeyup = function(event){
       }
       return true 
     }
-
-
-  // Checks whether the word is complete 
-  function comp_checker(skeleton) {
-    for (i=0; i < skeleton.length; i++){
-      if (skeleton.charAt(i) == "_"){
-        return false
-      }
-    }
-    return true 
-  }
-
-  // }
 
 
 };
