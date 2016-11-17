@@ -18,28 +18,23 @@
 $(document).ready(function() {
   var wins = 0;
   var guesses_remaining = 7;
-  var guessed = ""; 
+  var guessed = "";
+   // Placeholder for user's guess 
+  var user_guess = "a";
 
-  $("#topdiv").html("Wins: " + wins);
-
-  var guessesdiv = $("<div>");
-  $("#topdiv").append(guessesdiv)
-  guessesdiv.html("Guesses Remaining: " + guesses_remaining);
-
-  var lettersdiv = $("<div>");
-  guessesdiv.append(lettersdiv);
-  lettersdiv.html("Letters guessed: " + guessed);
-
-
-  
-
-
-// Store possible answers in an object 
+// Store possible answers in an object and grab a random word to start 
     var words = [{w : "spot", hint: "a"}, {w : "moon", hint: "b"}, {w : "tree", hint: "c"}];
-    word = words[Math.floor(Math.random()*3)].w
+    var word = words[Math.floor(Math.random()*3)].w
+
+  $("#winsdiv").html("Wins: " + wins);
+
+  $("#guessesdiv").html("Guesses Remaining: " + guesses_remaining);
+
+  $("#lettersdiv").html("Letters guessed: " + guessed);
+
 
 // FN Creates a skeleton with a _ for each letter in the word 
-    function make_skel(word) {
+    function make_skel() {
       skel = ""
       for (var i = 0; i < word.length; i++) {
         skel += "_ "
@@ -47,9 +42,12 @@ $(document).ready(function() {
       return skel
     };
 
+    var skeleton = make_skel(word)
+    $("#skeldiv").html(skeleton);
+
 // FN Checks whether the guessed letter is in the correct word 
 // If the guess is correct, function places guessed letter in the skeleton
-    function letter_checker(word, user_guess, skeleton) {
+    function letter_checker() {
       for (i = 0; i <word.length*2; i++) {
         if (word.charAt(i) == user_guess){
           new_skel = skeleton.substr(0,i*2) + user_guess + skeleton.substr(i*2+1, skeleton.length)
@@ -59,7 +57,7 @@ $(document).ready(function() {
       return skeleton 
     }
 // FN Checks whether the word is complete (all characters filled in)
-    function comp_checker(skeleton) {
+    function comp_checker() {
       for (i=0; i < skeleton.length; i++){
         if (skeleton.charAt(i) == "_"){
           return false
@@ -67,48 +65,63 @@ $(document).ready(function() {
       }
       return true 
     }
-var solved = false; 
-// FN Plays game 
 
-    skeleton = make_skel(word)
 
-    function gameplay(word, user_guess, guesses_remaining){
-
-      skeleton = letter_checker(word, user_guess, skeleton)
-      // Display updated skeleton 
+// FN overall gameplay 
+    function gameplay(){
+      // Check whether user guess appears in the word 
+      var new_skeleton = letter_checker(word, user_guess, skeleton)
+      var correct_guess = (new_skeleton != skeleton)
+      console.log(word)
+      // If the user correctly guessed the final letter, tell them they won
+      // Increase wins by 1, set a new word, display the corresponding skeleton 
       if (comp_checker(skeleton)) {
+        console.log("A, " + guesses_remaining)
         alert("You won!")
-        $("#topdiv").html("Wins: " + wins)
-        wins += 1
-        solved = true
-      } else if (guesses_remaining == 1) {
 
+        wins += 1
+        $("#topdiv").html("Wins: " + wins)
+        word = words[Math.floor(Math.random()*3)].w
+        skeleton = make_skel(word)
+        $("#skeldiv").html(skeleton);
+      
+      // If the user correctly guessed a letter but still has more work to do, just update the skeleton 
+      }else if (correct_guess) {
+        console.log("B, " + guesses_remaining)
+        skeleton = new_skeleton 
+        $("#skeldiv").html(skeleton)
+
+      // If the user incorrectly guessed and it was their final guess, alert game over. Reset. 
+      }else if (guesses_remaining == 1) {
+        console.log("C")       
         alert("Game over")
         word = words[Math.floor(Math.random()*3)].w
+        skeleton = make_skel(word)
+        $("#skeldiv").html(skeleton); 
 
-      }else{
-        guesses_remaining -= 1 
-        guessed += " " + user_guess
-        guessesdiv.html("Guesses Remaining: " + guesses_remaining);
-        guessesdiv.append(lettersdiv);
-        lettersdiv.html("Letters guessed: " + guessed + " [" + word + " " + skeleton + "]");
+      // If the user incorrectly guessed and they still have more work to do, decrease guesses remaining by 1. 
+      // Display their incorrect guess 
+      }else {
+        console.log("D")
+        guesses_remaining = guesses_remaining - 1
+        console.log(guesses_remaining)
+        $("#guessesdiv").html("Guesses Remaining: " + guesses_remaining);
+        guessed += (" " + user_guess)
+        $("#lettersdiv").html("Letters guessed: " + guessed + " [" + word + " " + skeleton + "]");
       }
-
-
     }
 
-// Grab a word to start with 
+// Set up the game: Grab a word to start with and display its skeleton 
 
-var word = words[Math.floor(Math.random()*3)].w
+    var word = words[Math.floor(Math.random()*3)].w
+    var skeleton = make_skel(word)
+    $("#skeldiv").html(skeleton);
 
 
-// Each letter key stroke triggers the following code for gameplay 
+// Play the game: Each letter key stroke saves the letter as user_guess and plays accordingly 
     document.onkeypress = function(event){
-      var user_guess = event.key;
-      gameplay(word, user_guess, guesses_remaining)
-    
-
-
+      user_guess = event.key;
+      gameplay(word, user_guess, guesses_remaining, skel)
 
     };
 });
