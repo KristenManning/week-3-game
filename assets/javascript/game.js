@@ -24,7 +24,8 @@ $(document).ready(function() {
 
 // Store possible answers in an object and grab a random word to start 
     var words = [{w : "spot", hint: "a"}, {w : "moon", hint: "b"}, {w : "tree", hint: "c"}];
-    var word = words[Math.floor(Math.random()*3)].w
+    var num = Math.floor(Math.random()*3)
+    var word = words[num].w
 
   $("#winsdiv").html("Wins: " + wins);
 
@@ -66,24 +67,34 @@ $(document).ready(function() {
       return true 
     }
 
+    function reset(){
+        words.splice(num,1)
+        console.log(words)
+        num = Math.floor(Math.random()*3)
+        word = words[num].w
+        skeleton = make_skel(word)
+        $("#skeldiv").html(skeleton)
+        guesses_remaining = 7
+        $("#guessesdiv").html("Guesses Remaining: " + guesses_remaining);
+        guessed = ""
+        $("#lettersdiv").html("Letters guessed: " + guessed)
+    }
 
 // FN overall gameplay 
     function gameplay(){
       // Check whether user guess appears in the word 
-      var new_skeleton = letter_checker(word, user_guess, skeleton)
+      var new_skeleton = letter_checker()
       var correct_guess = (new_skeleton != skeleton)
       console.log(word)
       // If the user correctly guessed the final letter, tell them they won
       // Increase wins by 1, set a new word, display the corresponding skeleton 
-      if (comp_checker(skeleton)) {
+      if (comp_checker()) {
         console.log("A, " + guesses_remaining)
         alert("You won!")
 
         wins += 1
         $("#topdiv").html("Wins: " + wins)
-        word = words[Math.floor(Math.random()*3)].w
-        skeleton = make_skel(word)
-        $("#skeldiv").html(skeleton);
+        reset()
       
       // If the user correctly guessed a letter but still has more work to do, just update the skeleton 
       }else if (correct_guess) {
@@ -95,9 +106,7 @@ $(document).ready(function() {
       }else if (guesses_remaining == 1) {
         console.log("C")       
         alert("Game over")
-        word = words[Math.floor(Math.random()*3)].w
-        skeleton = make_skel(word)
-        $("#skeldiv").html(skeleton); 
+        reset()
 
       // If the user incorrectly guessed and they still have more work to do, decrease guesses remaining by 1. 
       // Display their incorrect guess 
@@ -114,7 +123,7 @@ $(document).ready(function() {
 // Set up the game: Grab a word to start with and display its skeleton 
 
     var word = words[Math.floor(Math.random()*3)].w
-    var skeleton = make_skel(word)
+    var skeleton = make_skel()
     $("#skeldiv").html(skeleton);
 
 
