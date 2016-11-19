@@ -1,6 +1,7 @@
 h1{
 	color: black;
-	font-size: 46px;
+	font-size: 52px;
+	font-weight: bold;
 }
 h1, h2{
 	text-align: center;
@@ -8,12 +9,20 @@ h1, h2{
 }
 
 #guessesdiv, #lettersdiv{
-	font-size: 24px; 
+	font-size: 28px; 
 	text-align: center;
-	font-family: 'Fontdiner Swanky', cursive;
+	font-weight: bold;
 	margin: 5%;
 	background-color: #0169B2; 
 	padding: 10%;
+	color: white;
+}
+
+.btn{
+	padding: 10%;
+	margin: 12%;
+	font-size: 22px;
+	font-family: 'Boogaloo', cursive;
 }
 
 
@@ -31,16 +40,28 @@ h1, h2{
 #skeldiv{
 	text-align: center;
 	font-size: 48px;
+	color: white;
 }
 
 .image{
 	position: relative;
+	text-align: center;
+	margin-bottom: 10%
+
+}
+
+#sidebox{
+	text-align: center;
+	margin-top: 2%;
+	font-size: 54px;
+	font-family: 'Fontdiner Swanky', cursive;
+	color: #FFFF28;
 
 }
 
 #title{
 	background-color: #FFFF28;
-	margin-bottom: 5%;
+	margin-bottom: 2%;
 	padding: 1%;
 }
 
@@ -49,21 +70,35 @@ h1, h2{
 }
 
 #main{
-	margin-bottom: 5%; 
+	margin-bottom: 2%; 
 }
 
-h2 { 
+li{
+	margin:2px;
+}
+
+#hint { 
    position: absolute; 
-   top: 0;
-   left: 20px; 
-   opacity: 100%
-   font-size: 22px;
+   top: 10;
+   left: 0;
+   width: 100%;
+}
+
+h2{
+   font-size: 42px;
    font-weight: bold;
+   color: #FFFF28; 
+
 }
 
 h3{
 	font-size: 36px;
 	text-align: center;
 	font-family: 'Boogaloo', cursive;
+}
+
+#howto{
+	color: white;
+	margin: 1%;
 }
 
