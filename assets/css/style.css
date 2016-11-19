@@ -1,0 +1,13 @@
+h1, h2, h3{
+	text-align: center;
+}
+
+#winsdiv, #guessesdiv, #lettersdiv{
+	font-size: 24px; 
+
+}
+
+#skeldiv{
+	font-size: 48px;
+}
+
