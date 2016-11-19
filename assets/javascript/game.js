@@ -24,12 +24,13 @@ $(document).ready(function() {
   
   var user_guess = "a";
 
+
 // Store possible answers in an object and grab a random word to start 
-    var words = [{w : "sandwich", hint: "a", photo: }, {w : "waffles", hint: "a", photo: }, {w : "macarons", hint: "b"}, {w : "burger", hint: "c"}, {w : "cupcakes", hint: "a", photo: }, {w : "spaghetti", hint: "a", photo: }, {w : "sliders", hint: "a", photo: }, {w : "chicken", hint: "a", photo: }, {w : "kebabs", hint: "a", photo: }, {w : "stew", hint: "a", photo: }, {w : "parfait", hint: "a", photo: }, {w : "pizza", hint: "a", photo: }];
-    var num = Math.floor(Math.random()*3)
+    var words = [{w : "sandwich", hint: "Bread", photo:"assets/images/sandwich.jpg"  }, {w : "waffles", hint: "Flour & sugar", photo: "assets/images/waffles.jpg"}, {w : "burger", hint: "Ground beef", photo: "assets/images/burger.jpg"}, {w : "cupcakes", hint: "Frosting", photo: "assets/images/cupcakes.jpg" }, {w : "spaghetti", hint: "Tomato sauce", photo: "assets/spaghetti.jpg" }, {w : "kebabs", hint: "Skewer", photo: "assets/images/kebabs.jpeg"}, {w : "stew", hint: "Broth", photo:"assets/images/stew.jpeg" }, {w : "parfait", hint: "Yogurt", photo:"assets/images/parfait.jpeg" }, {w : "pizza", hint: "Dough", photo: "assets/images/pizza.jpg"}, {w : "salad", hint: "Lettuce", photo: "assets/images/salad.jpeg"}];
+    var num = Math.floor(Math.random()*words.length)
     var word = words[num].w
 
-  $("#winsdiv").html("Wins: " + wins);
+  $("#winsdiv").html("SCORE: " + wins);
 
   $("#guessesdiv").html("Guesses Remaining: " + guesses_remaining);
 
@@ -89,6 +90,12 @@ $(document).ready(function() {
       }
     }
 
+    $(".btn-primary").click(function(){
+        $("img").fadeTo(1000, 0.3);
+        console.log(words[num].hint)
+        $("h2").html(words[num].hint)
+    });
+
 // FN overall gameplay 
     function gameplay(){
       // Check whether user guess appears in the word 
@@ -101,8 +108,9 @@ $(document).ready(function() {
       if (comp_checker()) {
         $("#skeldiv").html(skeleton);
         wins ++;
-        $("#winsdiv").html("Wins: " + wins);
-        alert("Congratulations! You won!");
+        $("#winsdiv").html("WINS: " + wins);
+        $(".image").attr("src", words[num].photo)
+        $("#banner").html("Congratulations - you won!");
         reset()
       
       // If the user correctly guessed a letter but still has more work to do, just update the skeleton 
